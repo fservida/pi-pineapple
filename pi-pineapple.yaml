@@ -1,0 +1,54 @@
+- hosts: RASPI_LAN
+  remote_user: pi
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  vars:
+    domain_name: cthulhuuuu.iot
+    dns_servers: 8.8.8.8, 8.8.4.4
+    wlan_interface: wlan0
+    ssid_name: ESC-IoT
+    wpa_passphrase: esc_iot_2018
+
+  tasks:
+    - name: ensure hostapd is at the latest version
+      apt: name=hostapd state=latest
+    - name: ensure dhcp server is at the latest version
+      apt: name=isc-dhcp-server state=latest
+    - name: ensure haveged (entropy generator) is at the latest version
+      apt: name=haveged state=latest
+
+    - name: copy dhcpcd configuration file (to ignore wireless_dongle)
+      template: src=dhcpcd.j2 dest=/etc/dhcpcd.conf
+    - name: copy hostapd configuration file
+      template: src=hostapd.j2 dest=/etc/hostapd/hostapd.conf
+      notify:
+        - restart hostapd
+    - name: copy hostapd default configuration file
+      template: src=hostapd.conf dest=/etc/default/hostapd.conf
+      notify:
+        - restart hostapd
+
+    - name: copy dhcpd configuration file
+      template: src=dhcpd.j2 dest=/etc/dhcp/dhcpd.conf
+      notify:
+        - restart dhcpd
+    - name: copy isc-dhcp configuration file
+      template: src=isc-dhcp-server.j2 dest=/etc/default/isc-dhcp-server
+      notify:
+        - restart dhcpd
+
+    - name: copy interface configuration file
+      template: src=wireless_dongle.j2 dest=/etc/network/interfaces.d/{{ wlan_interface }}
+
+    - name: ensure hostapd is running and enable at boot
+      service: name=hostapd state=started enabled=yes
+    - name: ensure dhcpd is running and enable at boot
+      service: name=isc-dhcp-server state=started enabled=yes
+
+  handlers:
+    - name: restart hostapd
+      service: name=hostapd state=restarted
+    - name: restart dhcpd
+      service: name=isc-dhcp-server state=restarted

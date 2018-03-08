@@ -1,0 +1,48 @@
+# Device
+interface={{ wlan_interface }}
+driver=nl80211
+
+# SSID General Settings
+ssid={{ ssid_name }}
+wpa=2
+wpa_passphrase={{ wpa_passphrase }}
+wpa_key_mgmt=WPA-PSK
+channel=7
+
+# SSID Advanced Settings
+hw_mode=g
+ieee80211n=1
+wmm_enabled=1
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+country_code=CH
+macaddr_acl=0
+auth_algs=1
+
+# Broadcast SSID
+ignore_broadcast_ssid=0
+
+# WPS
+# Enable random per-device PSK generation for WPS clients
+# Please note that the file has to exists for hostapd to start (i.e., create an
+# empty file as a starting point).
+wpa_psk_file=/etc/hostapd.psk
+
+# Enable control interface for PBC/PIN entry
+ctrl_interface=/var/run/hostapd
+
+# Enable internal EAP server for EAP-WSC (part of Wi-Fi Protected Setup)
+eap_server=1
+
+# WPS configuration (AP configured, do not allow external WPS Registrars)
+wps_state=2
+ap_setup_locked=1
+wps_pin_requests=/var/run/hostapd.pin-req
+device_name=Pi-Pineapple
+manufacturer=Raspi
+model_name=WAP
+model_number=1
+serial_number=1
+device_type=6-0050F204-1
+os_version=01020300
+config_methods=label display push_button keypad

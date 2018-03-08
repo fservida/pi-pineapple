@@ -1,0 +1,22 @@
+# dhcpd.conf
+#
+# DHCP Config for pi-pineapple
+
+# Default Network Options
+option domain-name "{{ domain_name }}";
+option domain-name-servers {{ dns_servers }};
+
+default-lease-time 600;
+max-lease-time 7200;
+
+# Do not update DNS automatically for new clients
+ddns-update-style none;
+
+# Main DHCP server for WLAN
+authoritative;
+
+# WLAN Subnet
+subnet 10.20.30.0 netmask 255.255.255.0 {
+  range 10.20.30.10 10.20.30.100;
+  option routers 10.20.30.1;
+}
