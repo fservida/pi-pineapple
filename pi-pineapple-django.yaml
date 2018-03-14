@@ -1,0 +1,44 @@
+- hosts: RASPI_LAN
+  remote_user: pi
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  vars:
+    domain_name: cthulhuuuu.iot
+    dns_servers: 8.8.8.8, 8.8.4.4, 130.223.4.5, 130.223.8.20, 172.21.20.10, 172.21.20.11
+    wlan_interface: wlan0
+    ssid_name: ESC-IoT
+    wpa_passphrase: esc_iot_2018
+
+  tasks:
+    - name: ensure python3 is at the latest version
+      apt: name=python3 state=latest
+    - name: ensure pip3 is at the latest version
+      apt: name=python3-pip state=latest
+
+    - name: copy django project to raspi
+      synchronize:
+        src: pi_pineapple/
+        dest: /opt/pi_pineapple/
+        rsync_opts:
+          - "--exclude=db.sqlite3"
+
+    - name: copy requirements.txt to raspi
+      copy: src=requirements.txt dest=/opt/pi_pineapple/
+      notify:
+        - pip requirements
+
+    - name: copy django systemd unit
+      template: src=pi_pineapple.service dest=/etc/systemd/system/pi_pineapple.service
+      notify:
+        - restart django
+
+    - name: ensure django is running and enable at boot
+      service: name=pi_pineapple state=started enabled=yes
+
+  handlers:
+    - name: restart django
+      service: name=pi_pineapple state=restarted
+    - name: pip requirements
+      pip: requirements=/opt/pi_pineapple/requirements.txt executable=pip3

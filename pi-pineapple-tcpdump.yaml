@@ -1,0 +1,28 @@
+- hosts: RASPI_LAN
+  remote_user: pi
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  vars:
+    domain_name: cthulhuuuu.iot
+    dns_servers: 8.8.8.8, 8.8.4.4, 130.223.4.5, 130.223.8.20, 172.21.20.10, 172.21.20.11
+    wlan_interface: wlan0
+    ssid_name: ESC-IoT
+    wpa_passphrase: esc_iot_2018
+
+  tasks:
+    - name: ensure tcpdump is at the latest version
+      apt: name=tcpdump state=latest
+#
+#    - name: copy tcpdump systemd unit
+#      template: src=tcpdump.service dest=/etc/systemd/system/tcpdump.service
+#      notify:
+#        - restart tcpdump
+#
+#    - name: ensure tcpdump is running and enable at boot
+#      service: name=tcpdump state=started enabled=yes
+#
+#  handlers:
+#    - name: restart tcpdump
+#      service: name=tcpdump state=restarted

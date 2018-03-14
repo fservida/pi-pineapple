@@ -1,0 +1,9 @@
+{% for essid, bssid in networks.items %}
+    <ul>
+    <li><b>{{ essid }}</b>
+        <ul>
+            <li>{{ bssid }}</li>
+        </ul>
+    </li>
+    </ul>
+{% endfor %}

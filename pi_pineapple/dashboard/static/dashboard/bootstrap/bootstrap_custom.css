@@ -1,0 +1,304 @@
+/*
+	Bootstrap Modification to Style
+*/
+/*Prevents navbar from covering top of the page*/
+body {
+    padding-top: 50px;
+    margin-bottom: 60px;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/*
+    Avatar image in navbar
+ */
+.nav > li > a.avatar {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.navbar-avatar {
+    max-height: 46px;
+    width: auto;
+}
+
+/*login modal view style formatting*/
+.modal-dialog {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 10px;
+}
+
+.new-book, .contact {
+    max-width: 1600px;
+    margin: 50px auto;
+    padding: 10px;
+}
+
+.modal-content {
+    padding: 15px 30px;
+    background-color: #f8f8f8;
+    border-radius: 2px;
+}
+
+.modal-content h2 {
+    text-align: center;
+}
+
+.modal-body {
+    padding: 0px;
+    padding-top: 15px;
+}
+
+.modal-body .container-fluid {
+    padding: 0px;
+}
+
+.modal-body .form-control {
+    border-radius: 0px;
+    height: 44px;
+    font-size: 16px;
+}
+
+.modal-body .btn {
+    border-radius: 0px;
+    height: 54px;
+    font-size: 16px;
+}
+
+.modal-footer {
+    padding: 10px 0px 0px 0px;
+    text-align: left;
+}
+
+.modal-footer a {
+    text-decoration: none;
+    color: #666;
+    font-weight: 400;
+    display: inline-block;
+    opacity: 0.6;
+    transition: opacity ease 0.5s;
+}
+
+.login-page-box, .register-page-box, .pwd-reset-page-box {
+    box-shadow: none;
+}
+
+.modal-body textarea.form-control {
+    height: auto;
+}
+
+.help-block-isbn {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+/*Set alert width at 95% seen as body = 100% and center*/
+.alert {
+    margin: 2.5%;
+}
+
+/*Vertical center columns in row*/
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+dl.search_result {
+    background-color: #f7f7f7;
+}
+
+/*Book List Custom*/
+
+.search-result-list .panel-body, .insertions-list .panel-body {
+    padding: 0px;
+    margin: -1px;
+}
+
+/*Search Result Table style, modified in order to wrap at 1000px with scrolling for ease of use on small devices*/
+.search-result-list td {
+    vertical-align: middle;
+}
+
+.search-result-list .td-image {
+    width: 10%;
+    min-width: 100px;
+    vertical-align: middle;
+}
+
+.search-result-list .table, .insertions-list .table {
+    margin-bottom: 0px;
+}
+
+.search-result-list .table .table, .insertions-list .table .table {
+    background-color: inherit;
+}
+
+.search-result-list .table .table td, .insertions-list .table .table td {
+    white-space: normal;
+}
+
+.search-result-list tr.result-description, .insertions-list tr.result-description {
+    text-align: justify;
+}
+
+.search-result-list tr.result-info td, .insertions-list tr.result-info td {
+    border-top: 0px;
+}
+
+.search-result-list tr.result-info td.td-offer {
+    border-top: 1px solid #ddd;
+}
+
+.result-link, insertion-link {
+    text-align: right;
+}
+
+.insertions-list .td-price, .insertions-list .td-buy {
+    vertical-align: middle;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.description-row {
+    border-top: 1px solid #ddd;
+}
+
+.td-description div {
+    max-height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+}
+
+/*Home carousel re-styling*/
+#home-carousel .carousel-control.left, #home-carousel .carousel-control.right {
+    background-image: none;
+}
+
+#home-carousel .carousel-control, .carousel-control:hover {
+    color: black;
+}
+
+#home-carousel.carousel .item {
+    height: 350px;
+}
+
+#home-carousel .carousel-caption {
+    text-align: right;
+    right: 15%;
+    left: 30%;
+}
+
+#home-carousel .slide-image {
+    display: block;
+    margin-left: 10%;
+    height: 100%;
+    width: auto;
+    box-shadow: 0px 30px 40px rgba(0, 0, 0, .1);
+}
+
+#home-carousel .carousel-caption > p {
+    height: 80px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+/*
+	Home Container
+*/
+.home-container {
+    margin-top: 20px;
+}
+
+/*
+	Home Thumbnails (for top books and recent books).
+*/
+.home-thumbnail {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+}
+
+.home-thumbnail:hover .thumbnail-title {
+    bottom: 0px;
+    -webkit-transition: bottom .8s; /* Safari */
+    transition: bottom .8s;
+}
+
+.thumbnail-title {
+    bottom: -60px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    background-color: rgba(53, 53, 53, 0.57);
+    color: whitesmoke;
+    height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+    -webkit-transition: bottom .8s; /* Safari */
+    transition: bottom .8s;
+}
+
+body.touch .thumbnail-title {
+    bottom: 0px;
+}
+
+.missing-thumbnail {
+    bottom: 0px !important;
+}
+
+.no-bottom-border {
+    border-bottom: none;
+}
+
+.nav-row {
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+}
+
+.footer > .container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-top: 20px;
+}
+
+.footer > .container-fluid > p, .footer > .container-fluid > div {
+    display: inline-block;
+}
+
+.footer > .container-fluid > div {
+    position: absolute;
+    right: 20px;
+}
+
+@media screen and (max-width: 767px) {
+    .search-result-list .table .table, .insertions-list .table .table {
+        width: 1000px;
+    }
+
+    .book-info {
+        max-height: 300px;
+        overflow-y: auto;
+        text-align: center;
+    }
+}

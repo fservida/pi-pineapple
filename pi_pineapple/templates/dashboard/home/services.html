@@ -1,0 +1,39 @@
+{% extends 'dashboard/models/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Interfaces" %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>{% trans "Pi-Pinapple - Interfaces" %}</h1>
+        </div>
+
+        <div class="row home-container">
+            <div class="col-md-12">
+                <h3>Interfaces</h3>
+                <ul>
+                    {% for if_name, if_details in interfaces.items %}
+                        <li>
+                            {{ if_name }}:
+                            <ul>
+                                {% if if_details.addr %}
+                                    <li>Ip Address: {{ if_details.addr }}</li>
+                                {% endif %}
+                                {% if if_details.netmask %}
+                                    <li>Netmask: {{ if_details.netmask }}</li>
+                                {% endif %}
+                                {% if if_details.peer or if_details.broadcast %}
+                                    <li>Broadcast: {{ if_details.peer }}{{ if_details.broadcast }}</li>
+                                {% endif %}
+                                {% if if_details.mac_addr %}
+                                    <li>MAC Address: {{ if_details.mac_addr }}</li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

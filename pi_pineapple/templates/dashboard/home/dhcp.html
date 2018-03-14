@@ -1,0 +1,15 @@
+{% extends 'dashboard/models/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "DHCP" %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>{% trans "Pi-Pinapple - DHCP Server" %}</h1>
+        </div>
+        <div class="row home-container">
+            {% include "dashboard/models/services/dhcp/status.html" %}
+        </div>
+    </div>
+{% endblock %}

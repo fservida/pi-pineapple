@@ -1,0 +1,104 @@
+{% extends 'dashboard/models/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Pi-Pinapple" %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>{% trans "Pi-Pinapple - IoT Master Thesis - ESC" %}</h1>
+        </div>
+        <div class="row home-container">
+            <div class="col-md-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Network Interfaces</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ interfaces|length }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Wireless Interfaces</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ wireless_interfaces|length }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel {% if internet %}panel-success{% else %}panel-danger{% endif %}">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Internet</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% if internet %}Reachable{% else %}Unreachable{% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel {% if dhcp %}panel-success{% else %}panel-danger{% endif %}">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">DHCP Server</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% if internet %}Online{% else %}Offline{% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel {% if hostapd.online %}panel-success{% else %}panel-danger{% endif %}">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Hostapd Server</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% if internet %}Online on Interface: {{ hostapd.interface }}{% else %}Offline{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row home-container">
+            <div class="col-md-12">
+                <h3>WPS Device Connection</h3>
+                <div class="col-md-1">
+                    <button id="start-wps" type="button" class="btn btn-primary">Start WPS</button>
+                </div>
+                <div class="col-md-11">
+                    <div class="progress">
+                        <div id="wps-progress" class="progress-bar progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <h3>Interfaces</h3>
+                <ul>
+                    {% for if_name, if_details in interfaces.items %}
+                        <li>
+                            {{ if_name }}:
+                            <ul>
+                                {% if if_details.addr %}
+                                    <li>Ip Address: {{ if_details.addr }}</li>
+                                {% endif %}
+                                {% if if_details.netmask %}
+                                    <li>Netmask: {{ if_details.netmask }}</li>
+                                {% endif %}
+                                {% if if_details.peer or if_details.broadcast %}
+                                    <li>Broadcast: {{ if_details.peer }}{{ if_details.broadcast }}</li>
+                                {% endif %}
+                                {% if if_details.mac_addr %}
+                                    <li>MAC Address: {{ if_details.mac_addr }}</li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

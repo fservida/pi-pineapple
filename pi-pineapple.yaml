@@ -6,7 +6,7 @@
 
   vars:
     domain_name: cthulhuuuu.iot
-    dns_servers: 8.8.8.8, 8.8.4.4
+    dns_servers: 8.8.8.8, 130.223.8.20, 172.21.20.10, 8.8.4.4, 130.223.4.5, 172.21.20.11
     wlan_interface: wlan0
     ssid_name: ESC-IoT
     wpa_passphrase: esc_iot_2018
@@ -18,6 +18,8 @@
       apt: name=isc-dhcp-server state=latest
     - name: ensure haveged (entropy generator) is at the latest version
       apt: name=haveged state=latest
+    - name: ensure iptables-persistent is at the latest version
+      apt: name=iptables-persistent state=latest
 
     - name: copy dhcpcd configuration file (to ignore wireless_dongle)
       template: src=dhcpcd.j2 dest=/etc/dhcpcd.conf
@@ -29,6 +31,13 @@
       template: src=hostapd.conf dest=/etc/default/hostapd.conf
       notify:
         - restart hostapd
+
+    - name: copy wpa_supplicant config file (client mode wifi)
+      template: src=wpa_supplicant.j2 dest=/etc/wpa_supplicant/wpa_supplicant.conf
+    - name: copy cthuluuuu radius cert
+      template: src=ad01.hogwarts.servida.ch.pem dest=/etc/certs/ad01.hogwarts.servida.ch.pem
+    - name: copy eduroam radius cert
+      template: src=eduroam.unil.ch.pem dest=/etc/certs/eduroam.unil.ch.pem
 
     - name: copy dhcpd configuration file
       template: src=dhcpd.j2 dest=/etc/dhcp/dhcpd.conf
@@ -42,13 +51,30 @@
     - name: copy interface configuration file
       template: src=wireless_dongle.j2 dest=/etc/network/interfaces.d/{{ wlan_interface }}
 
+    - name: copy iptables configuration
+      template: src=rules.v4.j2 dest=/etc/iptables/rules.v4
+      notify:
+        - restore iptables
+
     - name: ensure hostapd is running and enable at boot
       service: name=hostapd state=started enabled=yes
     - name: ensure dhcpd is running and enable at boot
       service: name=isc-dhcp-server state=started enabled=yes
+    - name: ensure iptables-persistent (netfilter-persistent) is running and enable at boot
+      service: name=netfilter-persistent state=started enabled=yes
+
+    - name: ensure ip forwarding is enabled
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: 1
+        sysctl_set: yes
+        state: present
+        reload: yes
 
   handlers:
     - name: restart hostapd
       service: name=hostapd state=restarted
     - name: restart dhcpd
       service: name=isc-dhcp-server state=restarted
+    - name: restore iptables
+      command: iptables-restore /etc/iptables/rules.v4

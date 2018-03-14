@@ -1,0 +1,136 @@
+/*
+    Main
+*/
+
+.home {
+    padding: 10px;
+}
+
+.showbooks-title a {
+    text-decoration: none;
+    color: black;
+    font-weight: lighter;
+}
+
+.showbooks-content {
+    height: 220px;
+    display: inline-table;
+}
+
+.book-slide {
+    height: 200px;
+    background-color: gray;
+    width: 140px;
+    display: inline-table;
+    margin: 10px;
+}
+
+.book-slide > div {
+    display: table-cell;
+    vertical-align: bottom;
+    text-align: center;
+    padding: 5px;
+}
+
+.uni-slide {
+    height: 200px;
+    background-color: gray;
+    width: 200px;
+    display: inline-table;
+    margin: 10px;
+}
+
+.uni-slide > div {
+    display: table-cell;
+    vertical-align: bottom;
+    text-align: center;
+    padding: 5px;
+}
+
+/*Account Styles*/
+.profile-picture {
+    max-height: 200px;
+    border: 1px solid #e7e7e7;
+}
+
+.account-info, .new-book-info, .search-input, .book-info, .list-page-header {
+    padding: 10px;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.expand-info {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.book-info {
+    height: 350px;
+    overflow-y: hidden;
+}
+
+.account-info dl {
+    margin-top: 20px;
+}
+
+.btn-new-book {
+    margin-left: 40px;
+}
+
+.search-result-list, .insertions-list {
+    margin-top: 40px;
+}
+
+div.book-col {
+    height: 100%;
+}
+
+#book-thumbnail.expanded-col {
+    height: 329px;
+}
+
+img.img-book-info {
+    height: 90%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.expanded-info {
+    height: auto;
+    min-height: 350px;
+}
+
+/* Various Widgets */
+/* https://www.w3schools.com/howto/howto_css_loader.asp */
+
+.loader {
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 2s linear infinite;
+    margin: 20px;
+    align-self: center;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/*
+    Hide Submit Button on navbar (Didn't want to use JS)
+ */
+.hidden-submit {
+    border: 0 none;
+    height: 0;
+    width: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}

@@ -1,0 +1,11 @@
+[Unit]
+Description=Django Pi-Pineapple Webserver
+After=network.target
+
+[Service]
+Restart=on-failure
+WorkingDirectory=/opt/pi_pineapple
+ExecStart=/usr/bin/python3 manage.py runserver 0.0.0.0:80
+
+[Install]
+WantedBy=multi-user.target

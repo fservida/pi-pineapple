@@ -1,0 +1,119 @@
+{% load static %}
+{% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>{% block title %}Master Thesis{% endblock %}</title>
+    <meta name="description" content="MSc Thesis - IoT Devices">
+
+    <!-- Styles & Bootstrap style -->
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'dashboard/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/bootstrap/bootstrap_custom.css' %}">
+
+    {% block additional_head %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top ">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'dashboard:homepage' %}">MSc Thesis - IoT</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'dashboard:homepage' %}">{% trans 'Home' context "navbar" %}</a></li>
+                <li><a href="{% url 'dashboard:interfaces' %}">{% trans 'Interfaces' context "navbar" %}</a></li>
+                <li><a href="{% url 'dashboard:hostapd' %}">{% trans 'Hotspot' context "navbar" %}</a></li>
+                <li><a href="{% url 'dashboard:monitor' %}">{% trans 'Monitor' context "navbar" %}</a></li>
+                <li><a href="{% url 'dashboard:dhcp' %}">{% trans 'DHCP' context "navbar" %}</a></li>
+                <li><a href="{% url 'dashboard:services' %}">{% trans 'Services' context "navbar" %}</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle text-capitalize" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        {% get_current_language as ACTIVE_LANGUAGE %}
+                        {{ ACTIVE_LANGUAGE|language_name_local }}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post" class="form-inline">
+                                    {% csrf_token %}
+                                    <input name="language" type="hidden" value="{{ language.code }}"/>
+                                    <button type="submit" class='btn btn-link btn-block text-capitalize'>
+                                        {{ language.name_local }}
+                                    </button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="dropdown">
+                        {% if user.userprofile.avatar_file %}
+                            <a class='dropdown-toggle text-capitalize avatar' data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false">
+                                <img class="navbar-avatar img-circle" src="{{ user.userprofile.avatar }}"/></a>
+                        {% else %}
+                            <a class='dropdown-toggle text-capitalize' data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false">
+                                {{ user }}</a>
+                        {% endif %}
+
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'logout' %}" id="logout">{% trans 'Logout' %}</a></li>
+
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="#" data-toggle="modal" data-target="#loginModal">{% trans 'Login' %}</a></li>
+                {% endif %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+{% block content %}{% endblock %}
+
+
+<footer class="footer navbar-default navbar-bottom">
+    <div class="container-fluid">
+        <p class="text-muted">
+            MSc Thesis v0.1 - Copyright {{ copyright_year }} <a href="//www.francescoservida.ch">Francesco
+            Servida</a>
+        </p>
+        <div class="text-right">
+            <a href="/admin">{% trans 'Admin' context "navbar" %}</a>
+        </div>
+    </div>
+</footer>
+
+<script src="{% static 'dashboard/jquery/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'dashboard/bootstrap/bootstrap.min.js' %}"></script>
+<script src="{% static 'dashboard/functions.js' %}"></script>
+
+{% block additional_foot %}{% endblock %}
+
+</body>
+</html>
