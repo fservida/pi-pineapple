@@ -44,3 +44,22 @@ def set_hostapd_interface(interface):
     }
     data = {'success': network.set_hostapd_config(config)}
     return data
+
+
+def get_dhcp_leases():
+    attributes = [
+        'ip',  # The ip address assigned by this lease as string
+        'ethernet',  # The mac address of the lease
+        'hardware',  # The OSI physical layer used to request the lease (usually ethernet)
+        'start',  # The start time of this lease as DateTime object
+        'end',  # The time this lease expires as DateTime object or None if this is an infinite lease
+        'hostname',  # The hostname for this lease if given by the client
+        'binding_state',  # The binding state as string ('active', 'free', 'abandoned', 'backup')
+        'valid',  # True if the lease hasn't expired and is not in the future
+        'active',  # True if the binding state is active
+        'options',  # List of extra options in the lease file
+        'sets',
+    ]
+    data = {'leases': [{attribute: getattr(lease, attribute, None) for attribute in attributes} for key, lease in
+                       network.get_dhcp_leases().items()]}
+    return data

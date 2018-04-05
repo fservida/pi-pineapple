@@ -1,9 +1,11 @@
-from netifaces import AF_INET, AF_INET6, AF_LINK
 import netifaces as ni
-from api import shell
+import re
+from netifaces import AF_INET, AF_LINK
+
+from isc_dhcp_leases import IscDhcpLeases
 from manuf import manuf
 
-import re
+from api import shell
 
 
 def get_if_list():
@@ -114,7 +116,8 @@ def get_arp_table():
     ip_mac_re = re.compile(r"(?P<ip>(?:[\d]{1,3}\.){3}[\d]{1,3}).*at.*(?P<mac>(?:[a-f\d]{2}:){5}[a-f\d]{2})")
 
     arp_table = {line.groupdict()['mac'].lower(): line.groupdict()['ip'] for line in
-                 [re.search(ip_mac_re, line) for line in filter(lambda x: x, shell.get_arp_table().split("\n"))]}
+                 [re.search(ip_mac_re, line) for line in filter(lambda x: x, shell.get_arp_table().split("\n"))] if
+                 line}
 
     return arp_table
 
@@ -128,3 +131,11 @@ def get_client_details(mac_address, arp_table=None):
     }
 
     return client_details
+
+
+def get_dhcp_leases():
+    leases_file = "/var/lib/dhcp/dhcpd.leases"
+
+    leases = IscDhcpLeases(leases_file)
+
+    return leases.get_current()

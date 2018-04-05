@@ -1,0 +1,10 @@
+[Unit]
+Description = UPNP Daemon (IGD)
+After = network.target
+
+[Service]
+Restart = on-failure
+ExecStart = /usr/sbin/upnpd -f eth0 br0
+
+[Install]
+WantedBy = multi-user.target

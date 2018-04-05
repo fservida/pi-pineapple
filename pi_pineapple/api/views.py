@@ -1,9 +1,8 @@
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.template.response import TemplateResponse
-from django.contrib.auth.decorators import login_required
 
-from api import shell, network, serializers
+from api import shell, serializers
 
 
 @login_required
@@ -121,10 +120,22 @@ def set_hostapd_config(request):
         }
         return JsonResponse(data, status=400)
 
+
 @login_required
 def get_hostapd_clients(request):
     if request.method == 'GET':
         return JsonResponse(serializers.get_hostapd_clients())
+    else:
+        data = {
+            'error_message': 'Unsupported access method',
+        }
+        return JsonResponse(data, status=400)
+
+
+@login_required
+def get_dhcp_leases(request):
+    if request.method == 'GET':
+        return JsonResponse(serializers.get_dhcp_leases())
     else:
         data = {
             'error_message': 'Unsupported access method',

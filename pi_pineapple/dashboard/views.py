@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from api import serializers
@@ -49,6 +49,8 @@ class Dhcp(LoginRequiredMixin, TemplateView):
         context['services'] = {
             'dhcp': serializers.get_service_status('isc-dhcp-server'),
         }
+
+        context['leases'] = serializers.get_dhcp_leases().get('leases')
 
         return context
 

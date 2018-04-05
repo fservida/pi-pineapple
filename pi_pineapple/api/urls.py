@@ -1,4 +1,5 @@
 from django.urls import path
+
 from api import views
 
 app_name = 'api'
@@ -12,4 +13,5 @@ urlpatterns = [
     path('network/wireless/hostapd/clients', views.get_hostapd_clients, name="hostapd_clients"),
     # path('network/wireless/hostapd/set', views.set_hostapd_config, name="hostapd_config_set"),
     path('system/services/<str:service_name>/status', views.get_service_status, name="service_status"),
+    path('system/services/dhcp/leases', views.get_dhcp_leases, name="dhcp_leases")
 ]
