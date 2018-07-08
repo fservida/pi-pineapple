@@ -1,4 +1,4 @@
-- hosts: RASPI_LAN
+- hosts: RASPI_WIFI
   remote_user: pi
   become: yes
   become_method: sudo
@@ -31,13 +31,6 @@
       template: src=hostapd.conf dest=/etc/default/hostapd.conf
       notify:
         - restart hostapd
-
-    - name: copy wpa_supplicant config file (client mode wifi)
-      template: src=wpa_supplicant.j2 dest=/etc/wpa_supplicant/wpa_supplicant.conf
-    - name: copy cthuluuuu radius cert
-      template: src=ad01.hogwarts.servida.ch.pem dest=/etc/certs/ad01.hogwarts.servida.ch.pem
-    - name: copy eduroam radius cert
-      template: src=eduroam.unil.ch.pem dest=/etc/certs/eduroam.unil.ch.pem
 
     - name: copy dhcpd configuration file
       template: src=dhcpd.j2 dest=/etc/dhcp/dhcpd.conf
