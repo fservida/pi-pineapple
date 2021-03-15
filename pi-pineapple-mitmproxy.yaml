@@ -12,17 +12,41 @@
     wpa_passphrase: esc_iot_2018
 
   tasks:
-    - name: ensure mitmproxy is at the latest version
-      apt: name=mitmproxy state=latest
+    - name: ensure git is at the latest version
+      apt: name=git state=latest
+    - name: ensure libssl-dev is at the latest version
+      apt: name=libssl-dev state=latest
+    - name: ensure libffi-dev is at the latest version
+      apt: name=libffi-dev state=latest
+    - name: ensure python3 is at the latest version
+      apt: name=python3 state=latest
+    - name: ensure pip3 is at the latest version
+      apt: name=python3-pip state=latest
+    - name: ensure setuptools is at the latest version
+      apt: name=python-setuptools state=latest
+    - name: ensure setuptools for python3 is at the latest version
+      pip: name=setuptools executable=pip3
 
-    - name: copy mitmweb systemd unit
-      template: src=mitmweb.service dest=/etc/systemd/system/mitmweb.service
-      notify:
-        - restart mitmweb
+    - name: get mitmproxy 5.3.0  # 6+ drops support for python3.7 which is default on raspbian
+      git: 
+        repo: https://github.com/mitmproxy/mitmproxy
+        dest: /opt/mitmproxy
+        version: v5.3.0
+        update: yes
 
-    - name: ensure mitmweb is running and enable at boot
-      service: name=mitmweb state=started enabled=yes
+    - name: build and install mitmproxy & dependencies
+      shell: 
+        cmd: python3 setup.py install
+        chdir: /opt/mitmproxy
 
-  handlers:
-    - name: restart mitmweb
-      service: name=mitmweb state=restarted
+  #   - name: copy mitmweb systemd unit
+  #     template: src=mitmweb.service dest=/etc/systemd/system/mitmweb.service
+  #     notify:
+  #       - restart mitmweb
+
+  #   - name: ensure mitmweb is running and enable at boot
+  #     service: name=mitmweb state=started enabled=yes
+
+  # handlers:
+  #   - name: restart mitmweb
+  #     service: name=mitmweb state=restarted
