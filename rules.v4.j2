@@ -12,6 +12,6 @@ COMMIT
 :OUTPUT ACCEPT [95:7395]
 :POSTROUTING ACCEPT [4:302]
 -A POSTROUTING -o eth0 -j MASQUERADE
--A POSTROUTING -o {{ wlan_interface }} -j MASQUERADE
+# -A POSTROUTING -o {{ wlan_interface }} -j MASQUERADE
 COMMIT
 # Completed on Fri Mar  9 09:02:34 2018

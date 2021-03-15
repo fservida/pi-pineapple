@@ -18,7 +18,7 @@
       apt: name=python3-pip state=latest
     - name: ensure setuptools is at the latest version
       apt: name=python-setuptools state=latest
-    - name: ensure setuptools is at the latest version
+    - name: ensure setuptools for python3 is at the latest version
       pip: name=setuptools executable=pip3
 
     - name: copy django project to raspi
@@ -43,6 +43,15 @@
 
     - name: ensure django is running and enable at boot
       service: name=pi_pineapple state=started enabled=yes
+
+    - name: run migrations
+      shell: 
+        cmd: python3 manage.py makemigrations && python3 manage.py migrate
+        chdir: /opt/pi_pineapple
+
+    # - name: create default user
+    #   command: bash -c "python3 manage.py createsu"
+    #   chdir: /opt/pi_pineapple
 
   handlers:
     - name: restart django
