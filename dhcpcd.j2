@@ -20,5 +20,7 @@ require dhcp_server_identifier
 # Generate Stable Private IPv6 Addresses instead of hardware based ones
 slaac private
 
-# Deny Management of Wireless Interface
-denyinterfaces {{ wlan_interface }}
+# Setup Static IP on LAN interface and disable management
+interface {{ wlan_interface }}
+    static ip_address=10.20.30.1/24
+    nohook wpa_supplicant

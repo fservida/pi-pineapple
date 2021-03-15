@@ -6,8 +6,6 @@
 
   vars:
     domain_name: cthulhuuuu.iot
-    # dns_servers: 8.8.8.8, 130.223.8.20, 172.21.20.10, 8.8.4.4, 130.223.4.5, 172.21.20.11
-    dns_servers: 192.168.10.1
     wlan_interface: wlan0
     ssid_name: Pi-Pineapple
     wpa_passphrase: Pi-Pineapple
@@ -15,18 +13,15 @@
   tasks:
     - name: ensure hostapd is at the latest version
       apt: name=hostapd state=latest
-    - name: ensure dhcp server is at the latest version
-      apt: name=isc-dhcp-server state=latest
+    - name: ensure dns & dhcp server is at the latest version
+      apt: name=dnsmasq state=latest
     - name: ensure haveged (entropy generator) is at the latest version
       apt: name=haveged state=latest
     - name: ensure iptables-persistent is at the latest version
       apt: name=iptables-persistent state=latest
 
-    - name: copy dhcpcd configuration file (to ignore wireless interface)
+    - name: copy dhcpcd configuration file
       template: src=dhcpcd.j2 dest=/etc/dhcpcd.conf
-
-    - name: copy interface configuration file
-      template: src=wlan_interface.j2 dest=/etc/network/interfaces.d/{{ wlan_interface }}
     - name: restart Wlan interfaces
       command: bash -c "ifconfig {{ wlan_interface }} down && ifconfig {{ wlan_interface }} up"
 
@@ -34,33 +29,21 @@
       template: src=hostapd.psk dest=/etc/hostapd.psk
     - name: copy hostapd configuration file
       template: src=hostapd.j2 dest=/etc/hostapd/hostapd.conf
-      notify:
-        - restart hostapd
     - name: copy hostapd default configuration file
       template: src=hostapd.conf dest=/etc/default/hostapd.conf
-      notify:
-        - restart hostapd
 
-    - name: copy dhcpd configuration file
-      template: src=dhcpd.j2 dest=/etc/dhcp/dhcpd.conf
-      notify:
-        - restart dhcpd
-    - name: copy isc-dhcp configuration file
-      template: src=isc-dhcp-server.j2 dest=/etc/default/isc-dhcp-server
-      notify:
-        - restart dhcpd
+    - name: copy dnsmasq configuration file
+      template: src=dnsmasq.j2 dest=/etc/dnsmasq.conf
+
+    - name: ensure hostapd is running and enable at boot
+      service: name=hostapd state=restarted enabled=yes
+    - name: ensure dnsmasq is running and enable at boot
+      service: name=dnsmasq state=restarted enabled=yes
 
     - name: copy iptables configuration
       template: src=rules.v4.j2 dest=/etc/iptables/rules.v4
-      notify:
-        - restore iptables
-
-    - name: ensure hostapd is running and enable at boot
-      service: name=hostapd state=started enabled=yes
-    # If errors with isc-dhcp-server -> restart wlan interface and ensure it has an IP in the range declared under dhcpd.j2
-    - name: ensure dhcpd is running and enable at boot
-      service: name=isc-dhcp-server state=started enabled=yes
-
+    - name: restore iptables
+      command: iptables-restore /etc/iptables/rules.v4
     - name: ensure iptables-persistent (netfilter-persistent) is running and enable at boot
       service: name=netfilter-persistent state=started enabled=yes
 
@@ -71,11 +54,3 @@
         sysctl_set: yes
         state: present
         reload: yes
-
-  handlers:
-    - name: restart hostapd
-      service: name=hostapd state=restarted
-    - name: restart dhcpd
-      service: name=isc-dhcp-server state=restarted
-    - name: restore iptables
-      command: iptables-restore /etc/iptables/rules.v4
