@@ -134,8 +134,19 @@ def get_client_details(mac_address, arp_table=None):
 
 
 def get_dhcp_leases():
-    leases_file = "/var/lib/dhcp/dhcpd.leases"
+    leases_filename = "/var/lib/misc/dnsmasq.leases"
 
-    leases = IscDhcpLeases(leases_file)
+    with open(leases_filename) as leases_file:
+        leases_raw = leases_file.readlines()
+    for i in range(len(leases_raw)):
+        leases_raw[i] = leases_raw[i][:-1]  # remove \n
 
-    return leases.get_current()
+    leases = [{
+        'end': lease.split(" ")[0],
+        'mac': lease.split(" ")[1],
+        'ip': lease.split(" ")[2],
+        'hostname': lease.split(" ")[3],
+        'client_id': lease.split(" ")[4],
+    } for lease in leases_raw]
+
+    return leases

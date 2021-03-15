@@ -17,7 +17,7 @@ class Home(LoginRequiredMixin, TemplateView):
         context['wireless_interfaces'] = serializers.wireless_interfaces()
         context['hostapd'] = serializers.get_hostapd_config()
         context['services'] = {
-            'dhcp': serializers.get_service_status('isc-dhcp-server'),
+            'dhcp': serializers.get_service_status('dnsmasq'),
             'hostapd': serializers.get_service_status('hostapd'),
         }
 
@@ -47,7 +47,7 @@ class Dhcp(LoginRequiredMixin, TemplateView):
 
         # Get interface informations
         context['services'] = {
-            'dhcp': serializers.get_service_status('isc-dhcp-server'),
+            'dhcp': serializers.get_service_status('dnsmasq'),
         }
 
         context['leases'] = serializers.get_dhcp_leases().get('leases')
@@ -74,6 +74,7 @@ class Hostapd(LoginRequiredMixin, TemplateView):
 
 
 class Monitor(LoginRequiredMixin, TemplateView):
+    # TODO
     template_name = "dashboard/home/hostapd.html"
 
     def get_context_data(self, **kwargs):

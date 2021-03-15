@@ -1,6 +1,6 @@
 .idea/
 .DS_Store
+venv
 
 *.retry
 
-wpa_supplicant.j2

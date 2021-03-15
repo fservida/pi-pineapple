@@ -32,10 +32,10 @@
                                 <tbody>
                                 {% for lease in leases %}
                                     <tr>
-                                        <td>{{ lease.ethernet }}</td>
+                                        <td>{{ lease.mac }}</td>
                                         <td>{{ lease.ip }}</td>
                                         <td>{{ lease.hostname }}</td>
-                                        <td>{{ lease.start }}</td>
+                                        <td>{{ lease.client_id }}</td>
                                         <td>{{ lease.end }}</td>
                                     </tr>
                                 {% endfor %}
