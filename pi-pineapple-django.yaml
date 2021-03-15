@@ -16,6 +16,10 @@
       apt: name=python3 state=latest
     - name: ensure pip3 is at the latest version
       apt: name=python3-pip state=latest
+    - name: ensure setuptools is at the latest version
+      apt: name=python-setuptools state=latest
+    - name: ensure setuptools is at the latest version
+      pip: name=setuptools executable=pip3
 
     - name: copy django project to raspi
       synchronize:
@@ -28,6 +32,9 @@
       copy: src=requirements.txt dest=/opt/pi_pineapple/
       notify:
         - pip requirements
+    
+    - name: Flush Handlers
+      meta: flush_handlers
 
     - name: copy django systemd unit
       template: src=pi_pineapple.service dest=/etc/systemd/system/pi_pineapple.service

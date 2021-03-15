@@ -1,4 +1,4 @@
-- hosts: mitm_rpi_batcave
+- hosts: RASPI_WIFI
   remote_user: pi
   become: yes
   become_method: sudo
@@ -21,8 +21,16 @@
     - name: ensure iptables-persistent is at the latest version
       apt: name=iptables-persistent state=latest
 
-    - name: copy dhcpcd configuration file (to ignore wireless_dongle)
+    - name: copy dhcpcd configuration file (to ignore wireless interface)
       template: src=dhcpcd.j2 dest=/etc/dhcpcd.conf
+
+    - name: copy interface configuration file
+      template: src=wlan_interface.j2 dest=/etc/network/interfaces.d/{{ wlan_interface }}
+    - name: restart vlan interfaces
+      command: bash -c "ifconfig {{ wlan_interface }} down && ifconfig {{ wlan_interface }} up"
+
+    - name: copy hostapd psk file (for WPS)
+      template: src=hostapd.psk dest=/etc/hostapd.psk
     - name: copy hostapd configuration file
       template: src=hostapd.j2 dest=/etc/hostapd/hostapd.conf
       notify:
@@ -41,9 +49,6 @@
       notify:
         - restart dhcpd
 
-    - name: copy interface configuration file
-      template: src=wlan_interface.j2 dest=/etc/network/interfaces.d/{{ wlan_interface }}
-
     - name: copy iptables configuration
       template: src=rules.v4.j2 dest=/etc/iptables/rules.v4
       notify:
@@ -51,15 +56,17 @@
 
     - name: ensure hostapd is running and enable at boot
       service: name=hostapd state=started enabled=yes
+    # If errors with isc-dhcp-server -> restart wlan interface and ensure it has an IP in the range declared under dhcpd.j2
     - name: ensure dhcpd is running and enable at boot
       service: name=isc-dhcp-server state=started enabled=yes
+
     - name: ensure iptables-persistent (netfilter-persistent) is running and enable at boot
       service: name=netfilter-persistent state=started enabled=yes
 
     - name: ensure ip forwarding is enabled
       sysctl:
         name: net.ipv4.ip_forward
-        value: 1
+        value: "1"
         sysctl_set: yes
         state: present
         reload: yes
@@ -67,7 +74,10 @@
   handlers:
     - name: restart hostapd
       service: name=hostapd state=restarted
+      meta: flush_handlers
     - name: restart dhcpd
       service: name=isc-dhcp-server state=restarted
+      meta: flush_handlers
     - name: restore iptables
       command: iptables-restore /etc/iptables/rules.v4
+      meta: flush_handlers
