@@ -39,14 +39,8 @@
         cmd: python3 setup.py install
         chdir: /opt/mitmproxy
 
-  #   - name: copy mitmweb systemd unit
-  #     template: src=mitmweb.service dest=/etc/systemd/system/mitmweb.service
-  #     notify:
-  #       - restart mitmweb
+    - name: copy mitmweb systemd unit
+     template: src=mitmweb.service dest=/etc/systemd/system/mitmweb.service
 
-  #   - name: ensure mitmweb is running and enable at boot
-  #     service: name=mitmweb state=started enabled=yes
-
-  # handlers:
-  #   - name: restart mitmweb
-  #     service: name=mitmweb state=restarted
+    - name: ensure mitmweb is running and enable at boot
+     service: name=mitmweb state=restarted enabled=yes

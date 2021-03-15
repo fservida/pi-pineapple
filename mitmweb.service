@@ -4,8 +4,7 @@ After=network.target
 
 [Service]
 Restart=on-failure
-WorkingDirectory=/opt/pi_pinapple
-ExecStart=/usr/bin/python3 manage.py runserver
+ExecStart=/usr/local/bin/mitmweb --web-host 0.0.0.0  --mode transparent --showhost
 
 [Install]
 WantedBy=multi-user.target
