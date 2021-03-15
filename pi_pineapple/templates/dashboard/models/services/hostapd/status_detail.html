@@ -1,0 +1,12 @@
+<div class="col-md-12">
+    <div class="panel
+            {% if services.hostapd.status == 'active' %}{% if hostapd.interface %}panel-success{% else %}panel-warning{% endif %}{% else %}panel-danger{% endif %}">
+        <div class="panel-heading">
+            <h3 class="panel-title">Hostapd Server - {% if services.hostapd.status == 'active' %}{% if hostapd.interface %}Online on Interface: {{ hostapd.interface }}{% else %}Interface not found or configured!{% endif %}{% else %}
+                Offline{% endif %}</h3>
+        </div>
+        <div class="panel-body">
+            {{ services.hostapd.raw_output | safe }}
+        </div>
+    </div>
+</div>

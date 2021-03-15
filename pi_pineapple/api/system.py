@@ -11,4 +11,4 @@ def get_service_status(service_name):
         status = re.search(status_re, service).group('status').strip()
     except AttributeError:
         status = "unknown"
-    return status
+    return status, service

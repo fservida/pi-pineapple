@@ -17,8 +17,11 @@ def wireless_networks(interface="wlan1"):
     return data
 
 
-def get_service_status(service_name):
-    data = {'status': system.get_service_status(service_name)}
+def get_service_status(service_name, html=False):
+    service_status, raw_output = system.get_service_status(service_name)
+    if html:
+        raw_output = raw_output.replace("\n", "<br/>")
+    data = {'status': service_status, 'raw_output': raw_output}
     return data
 
 
@@ -62,5 +65,5 @@ def get_dhcp_leases():
     # ]
     # data = {'leases': [{attribute: getattr(lease, attribute, None) for attribute in attributes} for key, lease in
     #                    network.get_dhcp_leases().items()]}
-    data = {'leases': [network.get_dhcp_leases()]}
+    data = {'leases': network.get_dhcp_leases()}
     return data

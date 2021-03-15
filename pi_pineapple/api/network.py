@@ -1,3 +1,5 @@
+import datetime
+
 import netifaces as ni
 import re
 from netifaces import AF_INET, AF_LINK
@@ -142,7 +144,7 @@ def get_dhcp_leases():
         leases_raw[i] = leases_raw[i][:-1]  # remove \n
 
     leases = [{
-        'end': lease.split(" ")[0],
+        'end': str(datetime.datetime.fromtimestamp(int(lease.split(" ")[0]))),
         'mac': lease.split(" ")[1],
         'ip': lease.split(" ")[2],
         'hostname': lease.split(" ")[3],

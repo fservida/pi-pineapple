@@ -1,0 +1,10 @@
+<div class="col-md-12">
+    <div class="panel {% if services.dhcp.status == 'active' %}panel-success{% else %}panel-danger{% endif %}">
+        <div class="panel-heading">
+            <h3 class="panel-title">DHCP Server - {% if services.dhcp.status == 'active' %}Online{% else %}Offline{% endif %}</h3>
+        </div>
+        <div class="panel-body">
+        {{ services.dhcp.raw_output | safe }}
+        </div>
+    </div>
+</div>

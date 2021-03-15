@@ -51,6 +51,7 @@ class Dhcp(LoginRequiredMixin, TemplateView):
         }
 
         context['leases'] = serializers.get_dhcp_leases().get('leases')
+        print(context['leases'])
 
         return context
 
@@ -92,7 +93,7 @@ class Monitor(LoginRequiredMixin, TemplateView):
 
 
 class Services(LoginRequiredMixin, TemplateView):
-    template_name = "dashboard/home/hostapd.html"
+    template_name = "dashboard/home/services.html"
 
     def get_context_data(self, **kwargs):
         # Call base implementation
@@ -102,7 +103,8 @@ class Services(LoginRequiredMixin, TemplateView):
         context['wireless_interfaces'] = serializers.wireless_interfaces()
         context['hostapd'] = serializers.get_hostapd_config()
         context['services'] = {
-            'hostapd': serializers.get_service_status('hostapd'),
+            'hostapd': serializers.get_service_status('hostapd', True),
+            'dhcp': serializers.get_service_status('dnsmasq', True),
         }
 
         return context
