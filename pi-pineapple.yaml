@@ -1,4 +1,4 @@
-- hosts: RASPI_WIFI
+- hosts: mitm_rpi_batcave
   remote_user: pi
   become: yes
   become_method: sudo
@@ -8,8 +8,8 @@
     domain_name: cthulhuuuu.iot
     dns_servers: 8.8.8.8, 130.223.8.20, 172.21.20.10, 8.8.4.4, 130.223.4.5, 172.21.20.11
     wlan_interface: wlan0
-    ssid_name: ESC-IoT
-    wpa_passphrase: esc_iot_2018
+    ssid_name: Pi-Pineapple
+    wpa_passphrase: Pi-Pineapple
 
   tasks:
     - name: ensure hostapd is at the latest version
@@ -42,7 +42,7 @@
         - restart dhcpd
 
     - name: copy interface configuration file
-      template: src=wireless_dongle.j2 dest=/etc/network/interfaces.d/{{ wlan_interface }}
+      template: src=wlan_interface.j2 dest=/etc/network/interfaces.d/{{ wlan_interface }}
 
     - name: copy iptables configuration
       template: src=rules.v4.j2 dest=/etc/iptables/rules.v4
