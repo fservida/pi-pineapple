@@ -40,7 +40,7 @@
         chdir: /opt/mitmproxy
 
     - name: copy mitmweb systemd unit
-     template: src=mitmweb.service dest=/etc/systemd/system/mitmweb.service
+      template: src=mitmweb.service dest=/etc/systemd/system/mitmweb.service
 
     - name: ensure mitmweb is running and enable at boot
-     service: name=mitmweb state=restarted enabled=yes
+      service: name=mitmweb state=restarted enabled=yes
