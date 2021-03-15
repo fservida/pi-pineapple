@@ -8,7 +8,7 @@
     domain_name: cthulhuuuu.iot
     wlan_interface: wlan0
     ssid_name: Pi-Pineapple
-    wpa_passphrase: Pi-Pineapple
+    wpa_passphrase: pineapple
 
   tasks:
     - name: ensure hostapd is at the latest version
