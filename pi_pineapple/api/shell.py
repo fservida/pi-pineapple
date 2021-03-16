@@ -74,7 +74,7 @@ def restart_service(service_name):
 
 def get_iptables_status():
     try:
-        iptables_status = check_output(['iptables', '-L', '-t', 'nat', '-v'])
+        iptables_status = check_output(['iptables', '-L', '-t', 'nat', '-v', '-n'])
     except CalledProcessError:
         iptables_status = b""
     return iptables_status.decode()
