@@ -40,7 +40,11 @@
       template: src=pi_pineapple.service dest=/etc/systemd/system/pi_pineapple.service
 
     - name: ensure django is running and enable at boot
-      service: name=pi_pineapple state=started enabled=yes
+      service: name=pi_pineapple state=restarted enabled=yes
+      notify:
+        - reload systemctl
 
-    - name: restart django
-      service: name=pi_pineapple state=restarted
+  handlers:
+    - name: reload systemctl
+      shell: 
+        cmd: systemctl daemon-reload

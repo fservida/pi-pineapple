@@ -41,6 +41,13 @@
 
     - name: copy mitmweb systemd unit
       template: src=mitmweb.service dest=/etc/systemd/system/mitmweb.service
+      notify:
+        - reload systemctl
 
     - name: ensure mitmweb is running and enable at boot
       service: name=mitmweb state=restarted enabled=yes
+  
+  handlers:
+    - name: reload systemctl
+      shell: 
+        cmd: systemctl daemon-reload

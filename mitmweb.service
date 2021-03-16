@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Restart=on-failure
 Environment="SSLKEYLOGFILE=/var/mitmproxy/sslkeylogfile.txt"
-ExecStart=/usr/local/bin/mitmweb --web-host 0.0.0.0  --mode transparent --showhost --set ssl_version_server=TLSv1_2 --set ssl_version_client=TLSv1_2
+ExecStart=/usr/local/bin/mitmweb --web-host 0.0.0.0  --mode transparent --showhost --set ssl_version_server=TLSv1_2 --set ssl_version_client=TLSv1_2 --set ssl_insecure=true
 
 [Install]
 WantedBy=multi-user.target
