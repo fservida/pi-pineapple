@@ -70,3 +70,25 @@ def restart_service(service_name):
     except CalledProcessError:
         service = b""
     return service.decode()
+
+
+def get_iptables_status():
+    try:
+        iptables_status = check_output(['iptables', '-L', '-t', 'nat', '-v'])
+    except CalledProcessError:
+        iptables_status = b""
+    return iptables_status.decode()
+
+
+def start_mitm():
+    status = call(
+        "iptables -t nat -A PREROUTING -i wlan0 -p tcp --dport 80 -j REDIRECT --to-port 8080 && iptables -t nat -A PREROUTING -i wlan0 -p tcp --dport 443 -j REDIRECT --to-port 8080",
+        shell=True)
+    return status == 0
+
+
+def stop_mitm():
+    status = call(
+        "iptables -t nat -D PREROUTING -i wlan0 -p tcp --dport 80 -j REDIRECT --to-port 8080 && iptables -t nat -D PREROUTING -i wlan0 -p tcp --dport 443 -j REDIRECT --to-port 8080",
+        shell=True)
+    return status == 0

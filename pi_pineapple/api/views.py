@@ -24,6 +24,42 @@ def start_wps(request):
 
 
 @login_required
+def start_mitm(request):
+    if request.method == 'GET':
+        if shell.start_mitm():
+            data = {'status': 'success'}
+            return JsonResponse(data)
+        else:
+            data = {
+                'error_message': 'Error while starting MITM',
+            }
+            return JsonResponse(data, status=500)
+    else:
+        data = {
+            'error_message': 'Unsupported access method',
+        }
+        return JsonResponse(data, status=400)
+
+
+@login_required
+def stop_mitm(request):
+    if request.method == 'GET':
+        if shell.stop_mitm():
+            data = {'status': 'success'}
+            return JsonResponse(data)
+        else:
+            data = {
+                'error_message': 'Error while stopping MITM',
+            }
+            return JsonResponse(data, status=500)
+    else:
+        data = {
+            'error_message': 'Unsupported access method',
+        }
+        return JsonResponse(data, status=400)
+
+
+@login_required
 def get_interfaces(request):
     if request.method == 'GET':
         return JsonResponse(serializers.interfaces())

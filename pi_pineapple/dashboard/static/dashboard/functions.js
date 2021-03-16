@@ -55,3 +55,48 @@ function progress_bar() {
     }, 120000);
 };
 
+
+$('#start-mitm').click(start_mitm);
+$('#stop-mitm').click(stop_mitm);
+
+function start_mitm() {
+
+    console.log("Contacting backend to start MITM!");// sanity check
+
+    $.ajax({
+        url: "/api/network/mitm/on", // the endpoint
+        type: "GET", // http method
+
+        // handle a successful response
+        success: function (json) {
+            console.log("Successfully Started MITM");
+            window.location.reload(true); // Refresh page
+        },
+
+        // handle a non-successful response
+        error: function (xhr, errmsg, err) {
+            // Display Error Message
+        },
+    });
+};
+
+function stop_mitm() {
+
+    console.log("Contacting backend to stop MITM!");// sanity check
+
+    $.ajax({
+        url: "/api/network/mitm/off", // the endpoint
+        type: "GET", // http method
+
+        // handle a successful response
+        success: function (json) {
+            console.log("Successfully Stopped MITM");
+            window.location.reload(true); // Refresh page
+        },
+
+        // handle a non-successful response
+        error: function (xhr, errmsg, err) {
+            // Display Error Message
+        },
+    });
+};

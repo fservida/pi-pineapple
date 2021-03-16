@@ -76,17 +76,17 @@ class Hostapd(LoginRequiredMixin, TemplateView):
 
 class Monitor(LoginRequiredMixin, TemplateView):
     # TODO
-    template_name = "dashboard/home/hostapd.html"
+    template_name = "dashboard/home/monitor.html"
 
     def get_context_data(self, **kwargs):
         # Call base implementation
         context = super(Monitor, self).get_context_data(**kwargs)
 
-        # Get interface informations
-        context['wireless_interfaces'] = serializers.wireless_interfaces()
-        context['hostapd'] = serializers.get_hostapd_config()
+        # # Get interface informations
+        # context['wireless_interfaces'] = serializers.wireless_interfaces()
+        # context['hostapd'] = serializers.get_hostapd_config()
         context['services'] = {
-            'hostapd': serializers.get_service_status('hostapd'),
+            'iptables': serializers.get_iptables_status(True),
         }
 
         return context
@@ -105,6 +105,7 @@ class Services(LoginRequiredMixin, TemplateView):
         context['services'] = {
             'hostapd': serializers.get_service_status('hostapd', True),
             'dhcp': serializers.get_service_status('dnsmasq', True),
+            'iptables': serializers.get_iptables_status(True),
         }
 
         return context

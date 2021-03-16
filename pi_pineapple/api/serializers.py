@@ -1,4 +1,4 @@
-from api import network, system
+from api import network, system, shell
 
 
 def interfaces():
@@ -22,6 +22,14 @@ def get_service_status(service_name, html=False):
     if html:
         raw_output = raw_output.replace("\n", "<br/>")
     data = {'status': service_status, 'raw_output': raw_output}
+    return data
+
+
+def get_iptables_status(html=False):
+    raw_output = shell.get_iptables_status()
+    if html:
+        raw_output = raw_output.replace("\n", "<br/>")
+    data = {'raw_output': raw_output}
     return data
 
 
