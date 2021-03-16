@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Restart=on-failure
 WorkingDirectory=/var/tcpdump
-ExecStart=/usr/sbin/tcpdump -i {{ interface_name }} -w {{ interface_name }}.pcap
+ExecStart=/usr/sbin/tcpdump -i {{ wlan_interface }} -w {{ wlan_interface }}.pcap
 
 [Install]
 WantedBy=multi-user.target
