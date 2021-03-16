@@ -1,0 +1,11 @@
+[Unit]
+Description=Django Pi-Pineapple Webserver
+After=network.target
+
+[Service]
+Restart=on-failure
+WorkingDirectory=/var/tcpdump
+ExecStart=/usr/sbin/tcpdump -i {{ interface_name }} -w {{ interface_name }}.pcap
+
+[Install]
+WantedBy=multi-user.target

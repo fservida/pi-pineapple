@@ -39,6 +39,11 @@
         cmd: python3 setup.py install
         chdir: /opt/mitmproxy
 
+    - name: Creates mitmproxy sslkeylog directory
+      file:
+        path: /var/mitmproxy
+        state: directory
+
     - name: copy mitmweb systemd unit
       template: src=mitmweb.service dest=/etc/systemd/system/mitmweb.service
       notify:
