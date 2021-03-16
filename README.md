@@ -4,6 +4,9 @@ Setup an hotspot with MITM functionalities on a raspberry pi, with a web interfa
 Sets up a LAN subnet with 10.20.30.0/24 address range.
 
 # Requirements
+- Raspberry-Pi with Raspbian GNU/Linux 10 (buster).
+- Machine with ansible installed to configure the RPi
+
 Setup Ansible on control machine.
 ```
 pip3 install ansible
