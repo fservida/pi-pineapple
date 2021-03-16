@@ -19,6 +19,7 @@ class Home(LoginRequiredMixin, TemplateView):
         context['services'] = {
             'dhcp': serializers.get_service_status('dnsmasq'),
             'hostapd': serializers.get_service_status('hostapd'),
+            'mitmweb': serializers.get_service_status('mitmweb'),
         }
 
         return context
@@ -105,6 +106,7 @@ class Services(LoginRequiredMixin, TemplateView):
         context['services'] = {
             'hostapd': serializers.get_service_status('hostapd', True),
             'dhcp': serializers.get_service_status('dnsmasq', True),
+            'mitmweb': serializers.get_service_status('mitmweb', True),
             'iptables': serializers.get_iptables_status(True),
         }
 

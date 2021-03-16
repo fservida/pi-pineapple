@@ -16,11 +16,14 @@
                         <h3 class="panel-title">MITMProxy</h3>
                     </div>
                     <div class="panel-body">
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <button id="start-mitm" type="button" class="btn btn-success">Start MITM</button>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <button id="stop-mitm" type="button" class="btn btn-danger">Stop MITM</button>
+                        </div>
+                        <div class="col-md-4">
+                            <p>MITMWeb Interface: <br/><a href="http://{{ request.get_host | slice:':-5' }}:8081/">http://{{ request.get_host | slice:':-5' }}:8081/</a></p>
                         </div>
                     </div>
                 </div>
