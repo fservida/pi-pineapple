@@ -28,6 +28,30 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="panel {% if services.tcpdump.status == 'active' %}panel-success{% else %}panel-danger{% endif %}">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">tcpdump</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-3">
+                            <button id="start-tcpdump" type="button" class="btn btn-success">Start tcpdump</button>
+                        </div>
+                        <div class="col-md-3">
+                            <button id="stop-tcpdump" type="button" class="btn btn-danger">Stop tcpdump</button>
+                        </div>
+                        <div class="col-md-3">
+                            <button id="download-pcap" type="button" class="btn btn-default">Download PCAP</button>
+                        </div>
+                        <div class="col-md-3">
+                            <button id="download-sslkeylog" type="button" class="btn btn-default">Download sslkeylogfile</button>
+                        </div>
+                        <div class="col-md-12">
+                            <p>Current PCAP size: {{ tcpdump.pcap.size }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% include "dashboard/models/services/iptables/status_detail.html" %}
         </div>
     </div>

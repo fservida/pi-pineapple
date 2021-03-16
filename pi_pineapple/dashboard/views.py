@@ -20,6 +20,7 @@ class Home(LoginRequiredMixin, TemplateView):
             'dhcp': serializers.get_service_status('dnsmasq'),
             'hostapd': serializers.get_service_status('hostapd'),
             'mitmweb': serializers.get_service_status('mitmweb'),
+            'tcpdump': serializers.get_service_status('tcpdump'),
         }
 
         return context
@@ -85,9 +86,10 @@ class Monitor(LoginRequiredMixin, TemplateView):
 
         # # Get interface informations
         # context['wireless_interfaces'] = serializers.wireless_interfaces()
-        # context['hostapd'] = serializers.get_hostapd_config()
+        context['tcpdump'] = {'pcap': serializers.get_filesize('/var/tcpdump/tcpdump.pcap')}
         context['services'] = {
             'iptables': serializers.get_iptables_status(True),
+            'tcpdump': serializers.get_service_status('tcpdump'),
         }
 
         return context
@@ -107,6 +109,7 @@ class Services(LoginRequiredMixin, TemplateView):
             'hostapd': serializers.get_service_status('hostapd', True),
             'dhcp': serializers.get_service_status('dnsmasq', True),
             'mitmweb': serializers.get_service_status('mitmweb', True),
+            'tcpdump': serializers.get_service_status('tcpdump', True),
             'iptables': serializers.get_iptables_status(True),
         }
 

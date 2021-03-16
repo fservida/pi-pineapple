@@ -16,4 +16,6 @@ urlpatterns = [
     path('system/services/dhcp/leases', views.get_dhcp_leases, name="dhcp_leases"),
     path('network/mitm/on', views.start_mitm, name="start_mitm"),
     path('network/mitm/off', views.stop_mitm, name="stop_mitm"),
+    path('system/services/tcpdump/on', views.start_tcpdump, name="start_tcpdump"),
+    path('system/services/tcpdump/off', views.stop_tcpdump, name="stop_tcpdump"),
 ]

@@ -57,6 +57,11 @@ def set_hostapd_interface(interface):
     return data
 
 
+def get_filesize(filename):
+    data = {'size': shell.get_file_size(filename)}
+    return data
+
+
 def get_dhcp_leases():
     # attributes = [
     #     'ip',  # The ip address assigned by this lease as string

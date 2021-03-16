@@ -1,11 +1,11 @@
 [Unit]
-Description=Django Pi-Pineapple Webserver
+Description=TCPDump service
 After=network.target
 
 [Service]
 Restart=on-failure
 WorkingDirectory=/var/tcpdump
-ExecStart=/usr/sbin/tcpdump -i {{ wlan_interface }} -w {{ wlan_interface }}.pcap
+ExecStart=/usr/sbin/tcpdump -i {{ wlan_interface }} -w tcpdump.pcap
 
 [Install]
 WantedBy=multi-user.target

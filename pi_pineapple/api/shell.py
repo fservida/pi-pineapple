@@ -1,5 +1,5 @@
 from subprocess import call, check_call, check_output, CalledProcessError, run
-
+import os
 
 def start_wps():
     status = call(["hostapd_cli", "wps_pbc"])
@@ -25,8 +25,8 @@ def get_wireless_interfaces():
 def get_service_status(service_name):
     try:
         service = check_output(["systemctl", "status", service_name])
-    except CalledProcessError:
-        service = b""
+    except CalledProcessError as error:
+        service = error.output
     return service.decode()
 
 
@@ -92,3 +92,28 @@ def stop_mitm():
         "iptables -t nat -D PREROUTING -i wlan0 -p tcp --dport 80 -j REDIRECT --to-port 8080 && iptables -t nat -D PREROUTING -i wlan0 -p tcp --dport 443 -j REDIRECT --to-port 8080",
         shell=True)
     return status == 0
+
+
+def start_service(service_name):
+    try:
+        service = run(["systemctl", "start", service_name])
+    except CalledProcessError:
+        return False
+    return True
+
+
+def stop_service(service_name):
+    try:
+        service = check_output(["systemctl", "stop", service_name])
+    except CalledProcessError:
+        return False
+    return True
+
+
+def get_file_size(filename):
+    try:
+        assert os.path.isfile(filename)
+        filesize = os.path.getsize(filename)
+    except AssertionError:
+        return "File Not Found"
+    return f"{filesize / 10**9} MB"

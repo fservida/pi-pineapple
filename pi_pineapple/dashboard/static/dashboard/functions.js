@@ -100,3 +100,49 @@ function stop_mitm() {
         },
     });
 };
+
+
+$('#start-tcpdump').click(start_tcpdump);
+$('#stop-tcpdump').click(stop_tcpdump);
+
+function start_tcpdump() {
+
+    console.log("Contacting backend to start tcpdump!");// sanity check
+
+    $.ajax({
+        url: "/api/system/services/tcpdump/on", // the endpoint
+        type: "GET", // http method
+
+        // handle a successful response
+        success: function (json) {
+            console.log("Successfully Started tcpdump");
+            window.location.reload(true); // Refresh page
+        },
+
+        // handle a non-successful response
+        error: function (xhr, errmsg, err) {
+            // Display Error Message
+        },
+    });
+};
+
+function stop_tcpdump() {
+
+    console.log("Contacting backend to stop tcpdump!");// sanity check
+
+    $.ajax({
+        url: "/api/system/services/tcpdump/off", // the endpoint
+        type: "GET", // http method
+
+        // handle a successful response
+        success: function (json) {
+            console.log("Successfully Stopped tcpdump");
+            window.location.reload(true); // Refresh page
+        },
+
+        // handle a non-successful response
+        error: function (xhr, errmsg, err) {
+            // Display Error Message
+        },
+    });
+};

@@ -22,7 +22,6 @@ def start_wps(request):
         }
         return JsonResponse(data, status=400)
 
-
 @login_required
 def start_mitm(request):
     if request.method == 'GET':
@@ -50,6 +49,43 @@ def stop_mitm(request):
         else:
             data = {
                 'error_message': 'Error while stopping MITM',
+            }
+            return JsonResponse(data, status=500)
+    else:
+        data = {
+            'error_message': 'Unsupported access method',
+        }
+        return JsonResponse(data, status=400)
+
+
+# TODO change functions to accept argument and generalize to all services
+@login_required
+def start_tcpdump(request):
+    if request.method == 'GET':
+        if shell.start_service('tcpdump'):
+            data = {'status': 'success'}
+            return JsonResponse(data)
+        else:
+            data = {
+                'error_message': 'Error while starting tcpdump',
+            }
+            return JsonResponse(data, status=500)
+    else:
+        data = {
+            'error_message': 'Unsupported access method',
+        }
+        return JsonResponse(data, status=400)
+
+
+@login_required
+def stop_tcpdump(request):
+    if request.method == 'GET':
+        if shell.stop_service('tcpdump'):
+            data = {'status': 'success'}
+            return JsonResponse(data)
+        else:
+            data = {
+                'error_message': 'Error while stopping tcpdump',
             }
             return JsonResponse(data, status=500)
     else:
