@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, Http404
 from django.template.response import TemplateResponse
+import os
 
 from api import shell, serializers
 
@@ -213,3 +214,17 @@ def get_dhcp_leases(request):
             'error_message': 'Unsupported access method',
         }
         return JsonResponse(data, status=400)
+
+@login_required
+def download_file(request, file):
+    paths = {
+        'pcap': '/var/tcpdump/tcpdump.pcap',
+        'sslkeylog': '/var/mitmproxy/sslkeylogfile.txt',
+    }
+    file_path = paths.get(file)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/octet-stream")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404

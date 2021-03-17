@@ -116,4 +116,4 @@ def get_file_size(filename):
         filesize = os.path.getsize(filename)
     except AssertionError:
         return "File Not Found"
-    return f"{filesize / 10**9} MB"
+    return f"{filesize / 10**6} MB"

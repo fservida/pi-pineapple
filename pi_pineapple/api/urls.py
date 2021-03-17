@@ -18,4 +18,5 @@ urlpatterns = [
     path('network/mitm/off', views.stop_mitm, name="stop_mitm"),
     path('system/services/tcpdump/on', views.start_tcpdump, name="start_tcpdump"),
     path('system/services/tcpdump/off', views.stop_tcpdump, name="stop_tcpdump"),
+    path('system/files/<str:file>/download', views.download_file, name="download_file"),
 ]
