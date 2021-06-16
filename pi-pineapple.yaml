@@ -1,4 +1,4 @@
-- hosts: RASPI_WIFI
+- hosts: localhost
   remote_user: pi
   become: yes
   become_method: sudo
@@ -6,37 +6,56 @@
 
   vars:
     domain_name: cthulhuuuu.iot
-    wlan_interface: wlan0
+    wlan_interface: eno1
+    wan_interface: wlp2s0
+    wan2_interface: enx16205e32e759
     ssid_name: Pi-Pineapple
     wpa_passphrase: pineapple
+    lan_interface_ip: 192.168.1.1
+    lan_interface_subnet_mask: 24
+    dhcp_range_start_ip: 192.168.1.10
+    dhcp_range_end_ip: 192.168.1.200
+    dhcp_range_subnet_mask: 255.255.255.0
 
   tasks:
-    - name: ensure hostapd is at the latest version
-      apt: name=hostapd state=latest
+    # - name: ensure hostapd is at the latest version
+    #   apt: name=hostapd state=latest
     - name: ensure dns & dhcp server is at the latest version
       apt: name=dnsmasq state=latest
     - name: ensure haveged (entropy generator) is at the latest version
       apt: name=haveged state=latest
     - name: ensure iptables-persistent is at the latest version
       apt: name=iptables-persistent state=latest
+    - name: ensure ifconfig is at the latest version
+      apt: name=net-tools state=latest
 
-    - name: copy dhcpcd configuration file
+    # - name: copy interface configuration file (For Network Manager under Ubuntu)
+    #   template: src=interfaces.j2 dest=/etc/network/interfaces
+    - name: copy interface configuration file (For Network Manager under Ubuntu 19+)
+      template: src=02_manual_interfaces.j2 dest=/etc/netplan/02_manual_interfaces.yaml
+    - name: apply netplan config
+      command: bash -c "netplan apply"
+    - name: ensure NetworkManager is restarted
+      service: name=NetworkManager state=restarted enabled=yes
+
+    - name: copy dhcpcd configuration file (For DHCPCD under Raspbian)
       template: src=dhcpcd.j2 dest=/etc/dhcpcd.conf
+
     - name: restart Wlan interfaces
       command: bash -c "ifconfig {{ wlan_interface }} down && ifconfig {{ wlan_interface }} up"
 
-    - name: copy hostapd psk file (for WPS)
-      template: src=hostapd.psk dest=/etc/hostapd.psk
-    - name: copy hostapd configuration file
-      template: src=hostapd.j2 dest=/etc/hostapd/hostapd.conf
-    - name: copy hostapd default configuration file
-      template: src=hostapd.conf dest=/etc/default/hostapd.conf
+    # - name: copy hostapd psk file (for WPS)
+    #   template: src=hostapd.psk dest=/etc/hostapd.psk
+    # - name: copy hostapd configuration file
+    #   template: src=hostapd.j2 dest=/etc/hostapd/hostapd.conf
+    # - name: copy hostapd default configuration file
+    #   template: src=hostapd.conf dest=/etc/default/hostapd.conf
 
     - name: copy dnsmasq configuration file
       template: src=dnsmasq.j2 dest=/etc/dnsmasq.conf
 
-    - name: ensure hostapd is running and enable at boot
-      service: name=hostapd state=restarted enabled=yes
+    # - name: ensure hostapd is running and enable at boot
+    #   service: name=hostapd state=restarted enabled=yes
     - name: ensure dnsmasq is running and enable at boot
       service: name=dnsmasq state=restarted enabled=yes
 

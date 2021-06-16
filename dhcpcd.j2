@@ -22,5 +22,5 @@ slaac private
 
 # Setup Static IP on LAN interface and disable management
 interface {{ wlan_interface }}
-    static ip_address=10.20.30.1/24
+    static ip_address={{lan_interface_ip}}/{{lan_interface_subnet_mask}}
     nohook wpa_supplicant

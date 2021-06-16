@@ -1,0 +1,8 @@
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    eno1:
+      dhcp4: no
+      addresses: 
+        - {{lan_interface_ip}}/{{lan_interface_subnet_mask}}

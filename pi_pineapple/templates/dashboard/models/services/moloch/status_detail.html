@@ -1,0 +1,21 @@
+<div class="col-md-12">
+    <div class="panel {% if services.molochviewer.status == 'active' %}panel-success{% else %}panel-danger{% endif %}">
+        <div class="panel-heading">
+            <h3 class="panel-title">Moloch - Viewer Service - {% if services.molochviewer.status == 'active' %}Online - <a href="http://{{ request.get_host | slice:':-5' }}:8005/">http://{{ request.get_host | slice:':-5' }}:8005/</a>{% else %}
+                Offline{% endif %}</h3>
+        </div>
+        <div class="panel-body">
+            {{ services.molochviewer.raw_output | safe }}
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="panel {% if services.molochcapture.status == 'active' %}panel-success{% else %}panel-danger{% endif %}">
+        <div class="panel-heading">
+            <h3 class="panel-title">Moloch - Capture Service - {% if services.molochcapture.status == 'active' %}Online{% else %}Offline{% endif %}</h3>
+        </div>
+        <div class="panel-body">
+            {{ services.molochcapture.raw_output | safe }}
+        </div>
+    </div>
+</div>

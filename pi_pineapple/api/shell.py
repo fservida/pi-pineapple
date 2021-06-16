@@ -42,7 +42,7 @@ def check_internet():
 def get_hostapd_config():
     try:
         config = check_output(['hostapd_cli', 'get_config'])
-    except CalledProcessError:
+    except (CalledProcessError, FileNotFoundError):
         config = b""
     return config.decode()
 
@@ -50,7 +50,7 @@ def get_hostapd_config():
 def get_hostapd_clients():
     try:
         clients = check_output(['hostapd_cli', 'all_sta'])
-    except CalledProcessError:
+    except (CalledProcessError, FileNotFoundError):
         clients = b""
 
     return clients.decode()

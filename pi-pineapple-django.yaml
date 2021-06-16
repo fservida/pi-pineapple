@@ -1,4 +1,4 @@
-- hosts: RASPI_WIFI
+- hosts: localhost
   remote_user: pi
   become: yes
   become_method: sudo

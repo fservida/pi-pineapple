@@ -1,6 +1,7 @@
 interface={{ wlan_interface }} # Listening interface
-dhcp-range=10.20.30.10,10.20.30.200,255.255.255.0,24h
+bind-interfaces
+dhcp-range={{dhcp_range_start_ip}},{{dhcp_range_end_ip}},{{dhcp_range_subnet_mask}},24h
                 # Pool of IP addresses served via DHCP
 domain={{ domain_name }}     # Local wireless DNS domain
-address=/pi-pineapple.{{ domain_name }}/10.20.30.1
+address=/pi-pineapple.{{ domain_name }}/{{lan_interface_ip}}
                 # Alias for this router

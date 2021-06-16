@@ -21,6 +21,10 @@ class Home(LoginRequiredMixin, TemplateView):
             'hostapd': serializers.get_service_status('hostapd'),
             'mitmweb': serializers.get_service_status('mitmweb'),
             'tcpdump': serializers.get_service_status('tcpdump'),
+            'elasticsearch': serializers.get_service_status('elasticsearch'),
+            'kibana': serializers.get_service_status('kibana'),
+            'molochcapture': serializers.get_service_status('molochcapture'),
+            'molochviewer': serializers.get_service_status('molochviewer'),
         }
 
         return context
@@ -110,6 +114,10 @@ class Services(LoginRequiredMixin, TemplateView):
             'dhcp': serializers.get_service_status('dnsmasq', True),
             'mitmweb': serializers.get_service_status('mitmweb', True),
             'tcpdump': serializers.get_service_status('tcpdump', True),
+            'elasticsearch': serializers.get_service_status('elasticsearch', True),
+            'kibana': serializers.get_service_status('kibana', True),
+            'molochcapture': serializers.get_service_status('molochcapture', True),
+            'molochviewer': serializers.get_service_status('molochviewer', True),
             'iptables': serializers.get_iptables_status(True),
         }
 

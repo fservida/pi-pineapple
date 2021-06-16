@@ -1,11 +1,11 @@
-- hosts: RASPI_WIFI
+- hosts: localhost
   remote_user: pi
   become: yes
   become_method: sudo
   become_user: root
 
   vars:
-    wlan_interface: wlan0
+    wlan_interface: eno1
 
   tasks:
     - name: Creates tcpdump pcap directory

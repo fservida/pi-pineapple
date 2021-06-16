@@ -1,0 +1,10 @@
+<div class="col-md-2">
+    <div class="panel {% if services.elasticsearch.status == 'active' %}panel-success{% else %}panel-danger{% endif %}">
+        <div class="panel-heading">
+            <h3 class="panel-title">Elasticsearch</h3>
+        </div>
+        <div class="panel-body">
+            {% if services.elasticsearch.status == 'active' %}Online<br/><a href="http://{{ request.get_host | slice:':-5' }}:9200/">http://{{ request.get_host | slice:':-5' }}:9200/</a>{% else %}Offline{% endif %}
+        </div>
+    </div>
+</div>

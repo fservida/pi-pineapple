@@ -9,27 +9,7 @@
             <h1>{% trans "Status" %}</h1>
         </div>
         <div class="row home-container">
-            <div class="col-md-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Network Interfaces</h3>
-                    </div>
-                    <div class="panel-body">
-                        {{ interfaces|length }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Wireless Interfaces</h3>
-                    </div>
-                    <div class="panel-body">
-                        {{ wireless_interfaces|length }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
+            <div class="col-md-12">
                 <div class="panel {% if internet.reachable %}panel-success{% else %}panel-danger{% endif %}">
                     <div class="panel-heading">
                         <h3 class="panel-title">Internet</h3>
@@ -39,11 +19,37 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="row home-container">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Network Interfaces</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ interfaces|length }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Wireless Interfaces</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ wireless_interfaces|length }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row home-container">
             {% include "dashboard/models/services/dhcp/status.html" %}
             {% include "dashboard/models/services/hostapd/status.html" %}
             {% include "dashboard/models/services/mitmproxy/status.html" %}
             {% include "dashboard/models/services/tcpdump/status.html" %}
+            {% include "dashboard/models/services/elastic/status.html" %}
+            {% include "dashboard/models/services/kibana/status.html" %}
+            {% include "dashboard/models/services/moloch/status.html" %}
         </div>
 
         <div class="row home-container">
